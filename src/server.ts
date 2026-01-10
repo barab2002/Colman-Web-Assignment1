@@ -1,18 +1,21 @@
 import app from './app';
 import { config } from './config/env';
 import { connectIfNeeded } from './db/mongoClient';
+import connectMongo from './config/mongo';
 
 const PORT = config.PORT || 3000;
 
 (async () => {
   try {
     await connectIfNeeded();
+    // Ensure mongoose is connected before starting the server so Mongoose
+    // operations (create/update) don't buffer and time out.
+    await connectMongo();
+    console.log('Mongoose connected');
   } catch (err) {
-    // if mongo is required but not available, fail fast in dev; in production you may want different behavior
-    if ((config.DB_TYPE || 'JSON').toUpperCase() === 'MONGO') {
-      console.error('Mongo connection failed and DB_TYPE=MONGO. Exiting.');
-      process.exit(1);
-    }
+    console.error('Mongo connection failed. Exiting.');
+    console.error(err);
+    process.exit(1);
   }
 
   app.listen(PORT, () => {
