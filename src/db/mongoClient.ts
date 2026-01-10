@@ -4,7 +4,6 @@ import { config } from '../config/env';
 let client: MongoClient | null = null;
 
 export async function connectIfNeeded(): Promise<void> {
-  if ((config.DB_TYPE || 'JSON').toUpperCase() !== 'MONGO') return;
   if (client) return;
   const uri = config.MONGO_URI;
   client = new MongoClient(uri);
