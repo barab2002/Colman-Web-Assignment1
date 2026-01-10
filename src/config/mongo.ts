@@ -15,7 +15,6 @@ export async function connectMongo(): Promise<typeof mongoose> {
       const db = config.MONGO_DB || parts[1] || 'colman_db';
       uri = `mongodb://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${hostPart}/${db}?authSource=admin`;
     } catch (e) {
-      // fall back to provided URI
     }
   }
 
