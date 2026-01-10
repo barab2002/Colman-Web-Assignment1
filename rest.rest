@@ -1,14 +1,4 @@
 @baseUrl = http://localhost:3000
-@token = 
-
-### Login (get JWT)
-POST {{baseUrl}}/api/auth/login
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "password"
-}
 
 ### Health - Mongo
 GET {{baseUrl}}/api/health/mongo
@@ -16,7 +6,6 @@ GET {{baseUrl}}/api/health/mongo
 ### Create Post
 POST {{baseUrl}}/api/post
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
   "senderId": "user1",
@@ -26,16 +15,13 @@ Authorization: Bearer {{token}}
 
 ### List Posts
 GET {{baseUrl}}/api/post
-Authorization: Bearer {{token}}
 
 ### Get Post by ID
 GET {{baseUrl}}/api/post/{{postId}}
-Authorization: Bearer {{token}}
 
 ### Update Post
 PUT {{baseUrl}}/api/post/{{postId}}
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
   "title": "Updated title",
@@ -45,7 +31,6 @@ Authorization: Bearer {{token}}
 ### Create Comment
 POST {{baseUrl}}/api/comment
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
   "postId": "{{postId}}",
@@ -55,12 +40,10 @@ Authorization: Bearer {{token}}
 
 ### Get Comment by ID
 GET {{baseUrl}}/api/comment/{{commentId}}
-Authorization: Bearer {{token}}
 
 ### Update Comment
 PUT {{baseUrl}}/api/comment/{{commentId}}
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
   "content": "Edited comment"
@@ -68,8 +51,7 @@ Authorization: Bearer {{token}}
 
 ### Delete Comment
 DELETE {{baseUrl}}/api/comment/{{commentId}}
-Authorization: Bearer {{token}}
 
 ### Get Comments For Post
 GET {{baseUrl}}/api/post/{{postId}}/comments
-Authorization: Bearer {{token}}
+
