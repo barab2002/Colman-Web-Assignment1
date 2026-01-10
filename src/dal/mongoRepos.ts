@@ -1,5 +1,4 @@
 import { PostRepository, CommentRepository } from './interfaces';
-import { Post, Comment } from './models';
 import { PostMongoRepository } from './mongo/post.mongo.repo';
 import { CommentMongoRepository } from './mongo/comment.mongo.repo';
 
