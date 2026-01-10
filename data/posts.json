@@ -1,0 +1,18 @@
+[
+  {
+    "senderId": "Idan",
+    "title": "was",
+    "content": "here",
+    "id": "2bd5dcf7-d704-4d5e-a43e-96f48d53098b",
+    "createdAt": "2026-01-10T14:16:05.646Z",
+    "updatedAt": "2026-01-10T14:16:05.646Z"
+  },
+  {
+    "senderId": "Idan",
+    "title": "was",
+    "content": "here",
+    "id": "a9d5c7de-5cf0-4e94-8a60-776ac8daa2d4",
+    "createdAt": "2026-01-10T14:16:12.205Z",
+    "updatedAt": "2026-01-10T14:16:12.205Z"
+  }
+]
