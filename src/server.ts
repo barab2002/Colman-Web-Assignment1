@@ -1,12 +1,17 @@
 import app from './app';
 import { config } from './config/env';
 import { connectIfNeeded } from './db/mongoClient';
+import connectMongo from './config/mongo';
 
 const PORT = config.PORT || 3000;
 
 (async () => {
   try {
     await connectIfNeeded();
+    if ((config.DB_TYPE || 'JSON').toUpperCase() === 'MONGO') {
+      await connectMongo();
+      console.log('Mongoose connected');
+    }
   } catch (err) {
     // if mongo is required but not available, fail fast in dev; in production you may want different behavior
     if ((config.DB_TYPE || 'JSON').toUpperCase() === 'MONGO') {
