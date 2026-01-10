@@ -25,3 +25,5 @@ export interface CommentRepository {
   update(id: string, data: Partial<Omit<Comment, 'id' | 'createdAt'>>): Promise<Comment | null>;
   delete(id: string): Promise<boolean>;
 }
+export { Post, Comment };
+
