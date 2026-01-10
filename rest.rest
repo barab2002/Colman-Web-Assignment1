@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:3000
+
+### Health - Mongo
+GET {{baseUrl}}/api/health/mongo
+
+### Create Post (example)
+POST {{baseUrl}}/api/post
+Content-Type: application/json
+
+{
+  "senderId": "user1",
+  "title": "Welcome to Colman API",
+  "content": "This is an example post created via rest.rest"
+}
+
+### List Posts (all)
+GET {{baseUrl}}/api/post
+
+### List Posts (filter by sender)
+GET {{baseUrl}}/api/post?sender=user1
+
+### Get Post by ID
+GET {{baseUrl}}/api/post/{{postId}}
+
+### Update Post (partial update payload example)
+PUT {{baseUrl}}/api/post/{{postId}}
+Content-Type: application/json
+
+{
+  "title": "Updated title",
+  "content": "Updated content"
+}
+
+### Get Comments For Post
+GET {{baseUrl}}/api/post/{{postId}}/comments
+
+### Create Comment (example)
+POST {{baseUrl}}/api/comment
+Content-Type: application/json
+
+{
+  "postId": "{{postId}}",
+  "senderId": "user2",
+  "content": "Nice post! Thanks for sharing."
+}
+
+### Get Comment by ID
+GET {{baseUrl}}/api/comment/{{commentId}}
+
+### Update Comment
+PUT {{baseUrl}}/api/comment/{{commentId}}
+Content-Type: application/json
+
+{
+  "content": "Edited comment content"
+}
+
+### Delete Comment
+DELETE {{baseUrl}}/api/comment/{{commentId}}
