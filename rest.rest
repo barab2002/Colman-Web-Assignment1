@@ -3,23 +3,26 @@
 ### Health - Mongo
 GET {{baseUrl}}/api/health/mongo
 
-### Create Post
+### Create Post (example)
 POST {{baseUrl}}/api/post
 Content-Type: application/json
 
 {
   "senderId": "user1",
-  "title": "Test post",
-  "content": "This is a test post"
+  "title": "Welcome to Colman API",
+  "content": "This is an example post created via rest.rest"
 }
 
-### List Posts
+### List Posts (all)
 GET {{baseUrl}}/api/post
+
+### List Posts (filter by sender)
+GET {{baseUrl}}/api/post?sender=user1
 
 ### Get Post by ID
 GET {{baseUrl}}/api/post/{{postId}}
 
-### Update Post
+### Update Post (partial update payload example)
 PUT {{baseUrl}}/api/post/{{postId}}
 Content-Type: application/json
 
@@ -28,14 +31,14 @@ Content-Type: application/json
   "content": "Updated content"
 }
 
-### Create Comment
+### Create Comment (example)
 POST {{baseUrl}}/api/comment
 Content-Type: application/json
 
 {
   "postId": "{{postId}}",
   "senderId": "user2",
-  "content": "Nice post!"
+  "content": "Nice post! Thanks for sharing."
 }
 
 ### Get Comment by ID
@@ -46,7 +49,7 @@ PUT {{baseUrl}}/api/comment/{{commentId}}
 Content-Type: application/json
 
 {
-  "content": "Edited comment"
+  "content": "Edited comment content"
 }
 
 ### Delete Comment
@@ -54,4 +57,8 @@ DELETE {{baseUrl}}/api/comment/{{commentId}}
 
 ### Get Comments For Post
 GET {{baseUrl}}/api/post/{{postId}}/comments
+
+### Helpful notes
+# - Replace `{{postId}}` and `{{commentId}}` with IDs returned from create requests.
+# - This REST client file intentionally omits Authorization headers so it works against an unauthenticated JSON DAL or dev server.
 
