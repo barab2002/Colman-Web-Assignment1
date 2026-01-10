@@ -93,7 +93,7 @@ const swaggerDocument = {
     },
     '/api/post/{postId}/comments': {
       get: {
-        tags: ['Posts', 'Comments'],
+        tags: ['Posts'],
         summary: 'Get comments for a post',
         parameters: [{ name: 'postId', in: 'path', required: true, schema: { type: 'string' } }],
         responses: { '200': { description: 'OK', content: { 'application/json': { schema: { type: 'array', items: { $ref: '#/components/schemas/Comment' } } } } } },

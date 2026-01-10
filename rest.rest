@@ -31,6 +31,9 @@ Content-Type: application/json
   "content": "Updated content"
 }
 
+### Get Comments For Post
+GET {{baseUrl}}/api/post/{{postId}}/comments
+
 ### Create Comment (example)
 POST {{baseUrl}}/api/comment
 Content-Type: application/json
@@ -54,11 +57,3 @@ Content-Type: application/json
 
 ### Delete Comment
 DELETE {{baseUrl}}/api/comment/{{commentId}}
-
-### Get Comments For Post
-GET {{baseUrl}}/api/post/{{postId}}/comments
-
-### Helpful notes
-# - Replace `{{postId}}` and `{{commentId}}` with IDs returned from create requests.
-# - This REST client file intentionally omits Authorization headers so it works against an unauthenticated JSON DAL or dev server.
-
