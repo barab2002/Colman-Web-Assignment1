@@ -1,0 +1,99 @@
+{
+  "info": {
+    "_postman_id": "colman-web-assignment1-collection",
+    "name": "Colman Web Assignment1 - Smoke",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Post - idan",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"senderId\": \"idan\",\n  \"title\": \"Idan Post 1\",\n  \"content\": \"Post created by idan\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/post", "host": [ "{{baseUrl}}" ], "path": [ "api", "post" ] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Post request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('postId1', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Post - bar",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"senderId\": \"bar\",\n  \"title\": \"Bar Post 1\",\n  \"content\": \"Post created by bar\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/post", "host": [ "{{baseUrl}}" ], "path": [ "api", "post" ] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Post request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('postId2', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "List Posts",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post", "host": [ "{{baseUrl}}" ], "path": [ "api", "post" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('List Posts request URL:', pm.request.url.toString());", "console.log('List Posts response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Post by ID (postId1)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post/{{postId1}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "post", "{{postId1}}" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Post request URL:', pm.request.url.toString());", "console.log('Get Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Post by ID (postId2)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post/{{postId2}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "post", "{{postId2}}" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Post request URL:', pm.request.url.toString());", "console.log('Get Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Comment on postId1 (by bar)",
+      "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"postId\": \"{{postId1}}\",\n  \"senderId\": \"bar\",\n  \"content\": \"Nice post, idan\"\n}" }, "url": { "raw": "{{baseUrl}}/api/comment", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Comment request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('commentId1', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Comment on postId1 (by alice)",
+      "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"postId\": \"{{postId1}}\",\n  \"senderId\": \"alice\",\n  \"content\": \"Great thoughts, idan!\"\n}" }, "url": { "raw": "{{baseUrl}}/api/comment", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Comment request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('commentId3', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Comment on postId1 (by bob)",
+      "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"postId\": \"{{postId1}}\",\n  \"senderId\": \"bob\",\n  \"content\": \"I disagree, but interesting point.\"\n}" }, "url": { "raw": "{{baseUrl}}/api/comment", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Comment request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('commentId4', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Comment on postId1 (by carol)",
+      "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"postId\": \"{{postId1}}\",\n  \"senderId\": \"carol\",\n  \"content\": \"Following — thanks for sharing!\"\n}" }, "url": { "raw": "{{baseUrl}}/api/comment", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Comment request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('commentId5', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Create Comment on postId2 (by idan)",
+      "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"postId\": \"{{postId2}}\",\n  \"senderId\": \"idan\",\n  \"content\": \"Nice post, bar\"\n}" }, "url": { "raw": "{{baseUrl}}/api/comment", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "var json = pm.response.json();", "console.log('Create Comment request body:', (function(){ try { return JSON.stringify(JSON.parse(pm.request.body ? pm.request.body.raw : ''), null, 2); } catch(e){ return pm.request.body ? pm.request.body.raw : pm.request.url.toString(); } })());", "console.log('Create Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());", "if (json && json.id) { pm.environment.set('commentId2', json.id); }" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Comment by ID (commentId1)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/comment/{{commentId1}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment", "{{commentId1}}" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Comment request URL:', pm.request.url.toString());", "console.log('Get Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Comment by ID (commentId2)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/comment/{{commentId2}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "comment", "{{commentId2}}" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Comment request URL:', pm.request.url.toString());", "console.log('Get Comment response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Comments for Post (postId1)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post/{{postId1}}/comments", "host": [ "{{baseUrl}}" ], "path": [ "api", "post", "{{postId1}}", "comments" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Comments for Post request URL:', pm.request.url.toString());", "console.log('Get Comments for Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Get Comments for Post (postId2)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post/{{postId2}}/comments", "host": [ "{{baseUrl}}" ], "path": [ "api", "post", "{{postId2}}", "comments" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "console.log('Get Comments for Post request URL:', pm.request.url.toString());", "console.log('Get Comments for Post response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Search posts by idan",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/post?sender=idan", "host": [ "{{baseUrl}}" ], "path": [ "api", "post" ], "query": [ { "key": "sender", "value": "idan" } ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Search returns 200', function () { pm.response.to.have.status(200); });", "console.log('Search request URL:', pm.request.url.toString());", "console.log('Search response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Health - Mongo",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/health/mongo", "host": [ "{{baseUrl}}" ], "path": [ "api", "health", "mongo" ] } },
+      "event": [ { "listen": "test", "script": { "exec": [ "pm.test('Health returns 200 or 503', function () { pm.expect(pm.response.code).to.be.oneOf([200,503]); });", "console.log('Health request URL:', pm.request.url.toString());", "console.log('Health response:', (function(){ try { return JSON.stringify(pm.response.json(), null, 2); } catch(e){ return pm.response.text(); } })());" ], "type": "text/javascript" } } ]
+    }
+  ]
+}

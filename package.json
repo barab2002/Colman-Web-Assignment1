@@ -8,6 +8,7 @@
     "mongo:down": "docker compose down",
     "dev:with-mongo": "npm run mongo:up && npm run dev",
     "dev:ensure-mongo": "node ./scripts/ensure-mongo.js && npm run dev",
+    "smoke": "npx newman run postman/Colman-Web-Assignment1.postman_collection.json -e postman/Colman-Web-Assignment1.postman_environment.json --color on --delay-request 2000",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js"
   },
