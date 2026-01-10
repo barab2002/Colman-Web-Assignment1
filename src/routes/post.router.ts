@@ -8,8 +8,6 @@ router.post('/post', postCtrl.createPost);
 router.get('/post', postCtrl.getPosts);
 router.get('/post/:postId', postCtrl.getPost);
 router.put('/post/:postId', postCtrl.updatePost);
-
-// comments for a post
 router.get('/post/:postId/comments', commentCtrl.getCommentsByPost);
 
 export default router;

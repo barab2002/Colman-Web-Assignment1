@@ -21,7 +21,6 @@ export async function connectMongo(): Promise<typeof mongoose> {
 
   const opts = {
     autoIndex: true,
-    // keep defaults; additional options can be added here
   };
 
   return mongoose.connect(uri, opts as any);

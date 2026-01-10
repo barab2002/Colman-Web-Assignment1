@@ -1,6 +1,5 @@
 import express from 'express';
 import routes from './routes';
-import { errorHandler } from './middlewares/error.middleware';
 import swaggerUi from 'swagger-ui-express';
 
 const app = express();
@@ -127,7 +126,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api', routes);
 
-// central error handler
-app.use(errorHandler);
+// central error handler removed — relying on express default error handling
 
 export default app;
