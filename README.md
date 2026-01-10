@@ -94,6 +94,9 @@ npm run dev
 
 ## API Endpoints
 
+<img width="1517" height="884" alt="image" src="https://github.com/user-attachments/assets/6337cfff-bf6c-449c-82e0-76325afde860" />
+
+
 ### Posts
 - POST `/api/post`
 - GET `/api/post`
