@@ -41,11 +41,11 @@ export async function mongoHealth(_req: Request, res: Response) {
     hasPassword: !!config.MONGO_PASS,
   };
 
-  if (first.ok) {
+  if (first && first.ok && first.client) {
     try { await first.client.close(); } catch {};
     return res.json({ ok: true, uriUsed: 'ok', config: safeConfig });
   }
 
-  const err = first.error;
-  return res.status(503).json({ ok: false, error: String(err?.message ?? err), config: safeConfig });
+  const err = first && (first.error || new Error('unknown'));
+  return res.status(503).json({ ok: false, error: String((err as any)?.message ?? err), config: safeConfig });
 }
