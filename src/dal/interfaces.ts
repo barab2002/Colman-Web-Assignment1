@@ -1,4 +1,3 @@
-// Generic IDataAccess left for backward compatibility if needed
 export interface IDataAccess<T> {
   getAll(): Promise<T[]>;
   getById(id: string): Promise<T | null>;
@@ -6,8 +5,6 @@ export interface IDataAccess<T> {
   update(id: string, item: Partial<T>): Promise<T | null>;
   delete(id: string): Promise<boolean>;
 }
-
-// Repository interfaces specialized for posts and comments
 import { Post, Comment } from './models';
 
 export interface PostRepository {

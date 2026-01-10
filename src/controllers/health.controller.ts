@@ -6,7 +6,6 @@ export async function mongoHealth(_req: Request, res: Response) {
   const baseUri = process.env.MONGO_URI || config.MONGO_URI || 'mongodb://localhost:27017';
 
   let uri = baseUri;
-  // If explicit user/pass provided and not already embedded in URI, inject them
   if (config.MONGO_USER && config.MONGO_PASS && !/^[^@]+@/.test(baseUri.replace(/^mongodb(?:\+srv)?:\/\//, ''))) {
     uri = baseUri.replace(/^(mongodb(?:\+srv)?:\/\/)(.*)$/, `$1${encodeURIComponent(config.MONGO_USER)}:${encodeURIComponent(config.MONGO_PASS)}@$2`);
   }
@@ -23,9 +22,7 @@ export async function mongoHealth(_req: Request, res: Response) {
     }
   };
 
-  // First attempt
   let first = await tryConnect(uri);
-  // If auth failed and we have credentials, try again forcing authSource=admin
   if (!first.ok && /auth|authentication/i.test(String(first.error?.message || '')) && config.MONGO_USER && config.MONGO_PASS) {
     let fallback = uri;
     if (!/authSource=/i.test(fallback)) {
