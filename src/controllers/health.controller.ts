@@ -11,28 +11,41 @@ export async function mongoHealth(_req: Request, res: Response) {
     uri = baseUri.replace(/^(mongodb(?:\+srv)?:\/\/)(.*)$/, `$1${encodeURIComponent(config.MONGO_USER)}:${encodeURIComponent(config.MONGO_PASS)}@$2`);
   }
 
-  const client = new MongoClient(uri, { serverSelectionTimeoutMS: 3000 });
-  try {
-    await client.connect();
-    // run a ping
-    await client.db().admin().ping();
-    const safeConfig = {
-      MONGO_URI: String(process.env.MONGO_URI || config.MONGO_URI).replace(/:(?:[^:@]+)@/, ':<redacted>@'),
-      MONGO_DB: config.MONGO_DB,
-      MONGO_USER: config.MONGO_USER || undefined,
-      hasPassword: !!config.MONGO_PASS,
-    };
+  const tryConnect = async (candidateUri: string) => {
+    const client = new MongoClient(candidateUri, { serverSelectionTimeoutMS: 3000 });
+    try {
+      await client.connect();
+      await client.db('admin').admin().ping();
+      return { ok: true, client };
+    } catch (err: any) {
+      try { await client.close(); } catch {};
+      return { ok: false, error: err };
+    }
+  };
 
-    res.json({ ok: true, uriUsed: uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://') ? 'ok' : 'constructed', config: safeConfig });
-  } catch (err: any) {
-    const safeConfig = {
-      MONGO_URI: String(process.env.MONGO_URI || config.MONGO_URI).replace(/:(?:[^:@]+)@/, ':<redacted>@'),
-      MONGO_DB: config.MONGO_DB,
-      MONGO_USER: config.MONGO_USER || undefined,
-      hasPassword: !!config.MONGO_PASS,
-    };
-    res.status(503).json({ ok: false, error: String(err.message ?? err), config: safeConfig });
-  } finally {
-    try { await client.close(); } catch {};
+  // First attempt
+  let first = await tryConnect(uri);
+  // If auth failed and we have credentials, try again forcing authSource=admin
+  if (!first.ok && /auth|authentication/i.test(String(first.error?.message || '')) && config.MONGO_USER && config.MONGO_PASS) {
+    let fallback = uri;
+    if (!/authSource=/i.test(fallback)) {
+      fallback = fallback + (fallback.includes('?') ? '&' : '?') + 'authSource=admin';
+    }
+    first = await tryConnect(fallback);
   }
+
+  const safeConfig = {
+    MONGO_URI: String(process.env.MONGO_URI || config.MONGO_URI).replace(/:(?:[^:@]+)@/, ':<redacted>@'),
+    MONGO_DB: config.MONGO_DB,
+    MONGO_USER: config.MONGO_USER || undefined,
+    hasPassword: !!config.MONGO_PASS,
+  };
+
+  if (first.ok) {
+    try { await first.client.close(); } catch {};
+    return res.json({ ok: true, uriUsed: 'ok', config: safeConfig });
+  }
+
+  const err = first.error;
+  return res.status(503).json({ ok: false, error: String(err?.message ?? err), config: safeConfig });
 }
