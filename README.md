@@ -1,4 +1,4 @@
-# Colman Web – Assignment
+# Colman Web – Assignment 2
 ## Bar Abramovich and Idan Tepper
 **REST API for Posts & Comments (TypeScript + Express + MongoDB / JSON DAL)**
 
