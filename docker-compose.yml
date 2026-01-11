@@ -1,5 +1,15 @@
 version: '3.8'
 services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-passw0rd}@mongo:27017/colman_db?authSource=admin
+      - PORT=3000
+      - DAL_TYPE=mongo
+    depends_on:
+      - mongo
   mongo:
     image: mongo:6.0
     container_name: colman-mongo
