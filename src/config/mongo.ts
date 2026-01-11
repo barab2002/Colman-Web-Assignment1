@@ -7,7 +7,7 @@ export async function connectMongo(): Promise<typeof mongoose> {
   const user = process.env.MONGO_INITDB_ROOT_USERNAME || config.MONGO_USER;
   const pass = process.env.MONGO_INITDB_ROOT_PASSWORD || config.MONGO_PASS;
 
-  if (user && pass) {
+  if (user && pass && !uri.includes('@')) {
     try {
       const stripped = uri.replace(/^mongodb:\/\//, '');
       const parts = stripped.split('/');
