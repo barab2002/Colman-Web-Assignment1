@@ -39,19 +39,21 @@ describe('Post Controller', () => {
 
   describe('createPost', () => {
     it('should create a post and return 201', async () => {
-      req.body = { senderId: 'u1', title: 't1', content: 'c1' };
-      const newPost = { ...samplePost, ...req.body };
+      (req as any).user = { id: 'u1' };
+      req.body = { title: 't1', content: 'c1' };
+      const newPost = { ...samplePost, senderId: 'u1', ...req.body };
       mockedPostService.createPost.mockResolvedValue(newPost);
 
       await createPost(req as Request, res as Response);
 
-      expect(mockedPostService.createPost).toHaveBeenCalledWith(req.body);
+      expect(mockedPostService.createPost).toHaveBeenCalledWith({ senderId: 'u1', title: 't1', content: 'c1' });
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith(newPost);
     });
 
     it('should return 400 if required fields are missing', async () => {
-      req.body = { senderId: 'u1' }; // Missing title and content
+      (req as any).user = { id: 'u1' };
+      req.body = {}; // Missing title and content
       await createPost(req as Request, res as Response);
 
       expect(res.status).toHaveBeenCalledWith(400);
