@@ -14,7 +14,7 @@ function signRefreshToken(payload: object) {
 }
 
 export async function register(username: string, email: string, password: string) {
-  // Delegate to user service for validations - keep lightweight here
+
   const existingUser = await userRepo.getByUsername(username);
   if (existingUser) throw new Error('username_taken');
   const existingEmail = await userRepo.getByEmail(email);
@@ -23,7 +23,7 @@ export async function register(username: string, email: string, password: string
   const created = await userRepo.create({ username, email, passwordHash });
   const accessToken = signAccessToken({ userId: created.id });
   const refreshToken = signRefreshToken({ userId: created.id });
-  // persist refresh token
+
   await userRepo.update(created.id, { refreshTokens: [refreshToken] });
   return { user: created, accessToken, refreshToken };
 }
@@ -50,7 +50,7 @@ export async function refreshSession(refreshToken: string) {
     if (!user) throw new Error('invalid_refresh');
     const tokens = user.refreshTokens || [];
     if (!tokens.includes(refreshToken)) throw new Error('invalid_refresh');
-    // rotate: create new access and refresh token and replace the refresh in DB
+
     const accessToken = signAccessToken({ userId });
     const newRefresh = signRefreshToken({ userId });
     const newTokens = tokens.filter((t: string) => t !== refreshToken).concat([newRefresh]);
