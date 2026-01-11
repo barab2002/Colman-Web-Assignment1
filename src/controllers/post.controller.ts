@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import * as postService from '../services/post.service';
 
 export async function createPost(req: Request, res: Response) {
-  const { senderId, title, content } = req.body;
+  const { title, content } = req.body;
+  const senderId = (req as any).user?.id || req.body.senderId;
   if (!senderId || !title || !content) return res.status(400).json({ error: 'senderId, title and content are required' });
   const created = await postService.createPost({ senderId, title, content });
   res.status(201).json(created);

@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import * as commentService from '../services/comment.service';
 
 export async function createComment(req: Request, res: Response) {
-  const { postId, senderId, content } = req.body;
+  const { postId, content } = req.body;
+  const senderId = (req as any).user?.id || req.body.senderId;
   if (!postId || !senderId || !content) return res.status(400).json({ error: 'postId, senderId and content are required' });
   const created = await commentService.createComment({ postId, senderId, content });
   res.status(201).json(created);
@@ -18,6 +19,10 @@ export async function getComment(req: Request, res: Response) {
 export async function updateComment(req: Request, res: Response) {
   const { commentId } = req.params;
   const data = req.body;
+  const existing = await commentService.getCommentById(commentId);
+  if (!existing) return res.status(404).json({ error: 'Not found' });
+  const userId = (req as any).user?.id;
+  if (!userId || existing.senderId !== userId) return res.status(403).json({ error: 'forbidden' });
   const updated = await commentService.updateComment(commentId, data);
   if (!updated) return res.status(404).json({ error: 'Not found' });
   res.json(updated);
@@ -25,6 +30,10 @@ export async function updateComment(req: Request, res: Response) {
 
 export async function deleteComment(req: Request, res: Response) {
   const { commentId } = req.params;
+  const existing = await commentService.getCommentById(commentId);
+  if (!existing) return res.status(404).json({ error: 'Not found' });
+  const userId = (req as any).user?.id;
+  if (!userId || existing.senderId !== userId) return res.status(403).json({ error: 'forbidden' });
   const ok = await commentService.deleteComment(commentId);
   if (!ok) return res.status(404).json({ error: 'Not found' });
   res.status(204).send();
