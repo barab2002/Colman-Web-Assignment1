@@ -12,7 +12,7 @@ export const config = {
   MONGO_USER: process.env.MONGO_INITDB_ROOT_USERNAME || process.env.MONGO_USER || '',
   MONGO_PASS: process.env.MONGO_INITDB_ROOT_PASSWORD || process.env.MONGO_PASS || '',
   // JWT settings
-  JWT_SECRET: process.env.JWT_SECRET || 'replace-me-with-secure-secret',
+  JWT_SECRET: process.env.JWT_SECRET || 'BarAndIdanProjectSecret',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '15m',
   REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d',
 };
