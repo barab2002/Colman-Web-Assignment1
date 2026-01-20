@@ -1,19 +1,26 @@
 # Colman Web – Assignment 2
 
+![Node.js](https://img.shields.io/badge/Node.js-20.x-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.x-green)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+
 **Student Names:** Bar Abramovich, Idan Tepper
 
-A robust **RESTful API** for managing Posts and Comments, built with **Node.js, Express, and TypeScript**. This project demonstrates clean architecture, a flexible Data Access Layer (DAL), and full containerization.
+A robust **RESTful API** for managing Posts, Comments, and Users, built with **Node.js, Express, and TypeScript**. This project demonstrates clean architecture, a flexible Data Access Layer (DAL), and full containerization with authentication.
 
 ---
 
 ## 🚀 Features
 
-- **TypeScript**: Fully typed codebase for better maintainability and developer experience.
-- **Clean Architecture**: Separation of concerns with Controllers, Services, and DAL.
-- **Flexible DAL**: Supports easy switching between **MongoDB** (Production) and **JSON Files** (Dev/Fallback).
-- **Swagger UI**: Interactive API documentation automatically generated.
-- **Docker Support**: Full `docker-compose` setup for easy deployment.
-- **Testing**: Comprehensive Jest test suite and Postman collections.
+- **Authentication**: Secure JWT-based authentication (Login, Register, Refresh Token).
+- **Clean Architecture**: Modular design separating Controllers, Services, Models, and DAL.
+- **Flexible DAL**: Supports switching between **MongoDB** (Production) and **JSON Files** (Dev/Fallback).
+- **TypeScript**: Fully typed codebase for reliability and maintainability.
+- **Swagger UI**: Interactive API documentation.
+- **Docker Support**: Containerized environment using `docker-compose`.
+- **Testing**: Includes Jest unit tests and Postman smoke tests.
 
 ---
 
@@ -21,7 +28,7 @@ A robust **RESTful API** for managing Posts and Comments, built with **Node.js, 
 
 - **Node.js** (v18+ recommended)
 - **Docker & Docker Compose** (for containerized execution)
-- **MongoDB** (local or remote, if running locally without Docker)
+- **MongoDB** (if running locally without Docker)
 
 ---
 
@@ -29,7 +36,7 @@ A robust **RESTful API** for managing Posts and Comments, built with **Node.js, 
 
 ### Method 1: Docker (Recommended)
 
-The easiest way to run the project. This starts both the API and a MongoDB instance.
+The easiest way to run the full stack (App + MongoDB).
 
 ```bash
 # Build and start the containers
@@ -49,11 +56,11 @@ If you prefer running directly on your machine:
     ```
 
 2.  **Environment Setup**:
-    Create a `.env` file from the example:
+    Create a `.env` file based on the example:
     ```bash
     cp .env.example .env
     ```
-    *Ensure `DAL_TYPE=mongo` (or `json`) and `MONGO_URI` are set correctly.*
+    *Make sure `MONGO_URI` is correct for your local setup.*
 
 3.  **Start Database** (if using Mongo):
     ```bash
@@ -69,44 +76,64 @@ If you prefer running directly on your machine:
 
 ## 📖 API Documentation
 
-We use **Swagger UI** for interactive API documentation.  
-Once the server is running, visit:
+**Interactive Swagger UI**: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
-👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+### Endpoints Overview
 
-### Key Endpoints
+#### 🔐 Authentication (`/auth`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register a new user |
+| `POST` | `/api/auth/login` | Login and receive Access/Refresh tokens |
+| `POST` | `/api/auth/refresh` | Refresh access token |
+| `POST` | `/api/auth/logout` | Logout user |
 
-| Resource | Method | Endpoint | Description |
-| :--- | :--- | :--- | :--- |
-| **Auth** | | | *(If applicable)* |
-| **Posts** | `GET` | `/api/post` | Get all posts |
-| | `POST` | `/api/post` | Create a new post |
-| | `GET` | `/api/post/:id` | Get a specific post |
-| **Comments** | `GET` | `/api/post/:id/comments` | Get comments for a post |
-| | `POST` | `/api/comment` | Add a comment |
+#### 👤 Users (`/users`)
+*Requires Authentication header*
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/users` | Get all users |
+| `GET` | `/api/users/:userId` | Get specific user details |
+| `PUT` | `/api/users/:userId` | Update user details |
+| `DELETE` | `/api/users/:userId` | Delete a user |
+
+#### 📝 Posts (`/post`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/post` | Get all posts |
+| `POST` | `/api/post` | Create a new post |
+| `GET` | `/api/post/:postId` | Get a specific post |
+| `PUT` | `/api/post/:postId` | Update a post |
+| `GET` | `/api/post/:postId/comments` | Get comments for a post |
+
+#### 💬 Comments (`/comment`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/comment` | Add a comment |
+| `GET` | `/api/comment/:commentId` | Get a specific comment |
+| `PUT` | `/api/comment/:commentId` | Update a comment |
+| `DELETE` | `/api/comment/:commentId` | Delete a comment |
+
+#### 🏥 System Health
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/health/mongo` | Check MongoDB connection status |
 
 ---
 
 ## 🧪 Testing
 
-### Unit & Integration Tests (Jest)
-Run the automated test suite:
-
+### Automated Tests (Jest)
+Run unit and integration tests:
 ```bash
 npm test
 ```
 
-### Smoke / Postman Tests
-Run the Postman collection via Newman:
-
-<img width="504" height="489" alt="image" src="https://github.com/user-attachments/assets/2317c540-5a26-4005-875a-afb0fb629199" />
-
-
-### Posts
-- POST `/api/post`
-- GET `/api/post`
-- GET `/api/post/:id`
-- PATCH `/api/post/:id`
+### Smoke Tests (Postman)
+To run the included Postman collection against a running server:
+```bash
+npm run smoke
+```
 
 ---
 
@@ -114,15 +141,20 @@ Run the Postman collection via Newman:
 
 ```
 src/
+├── app.ts          # App configuration
+├── server.ts       # Server entry point
+├── config/         # System config (Swagger, DB)
 ├── controllers/    # Request handlers
 ├── services/       # Business logic
-├── dal/            # Data Access Layer (Mongo/JSON implementations)
-├── models/         # Data models and interfaces
-├── routes/         # Express routes definitions
-├── config/         # App configuration (Env, DB, Swagger)
-├── db/             # Database connection logic
-├── app.ts          # Express app setup
-└── server.ts       # Server entry point
+├── models/         # Mongoose models & Interfaces
+├── dal/            # Data Access Layer (Mongo & FS)
+├── routes/         # Express routes
+├── middleware/     # Auth & Validation middleware
+└── scripts/        # Utility scripts
 ```
 
 ---
+
+## 👥 Authors
+*   **Bar Abramovich**
+*   **Idan Tepper**
