@@ -99,7 +99,7 @@ npm test
 ### Smoke / Postman Tests
 Run the Postman collection via Newman:
 
-<img width="1517" height="884" alt="image" src="https://github.com/user-attachments/assets/6337cfff-bf6c-449c-82e0-76325afde860" />
+<img width="504" height="489" alt="image" src="https://github.com/user-attachments/assets/2317c540-5a26-4005-875a-afb0fb629199" />
 
 
 ### Posts
