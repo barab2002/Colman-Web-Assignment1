@@ -22,5 +22,16 @@ export interface CommentRepository {
   update(id: string, data: Partial<Omit<Comment, 'id' | 'createdAt'>>): Promise<Comment | null>;
   delete(id: string): Promise<boolean>;
 }
+
+export interface UserRepository {
+  create(user: { username: string; email: string; passwordHash: string }): Promise<any>;
+  getAll(): Promise<any[]>;
+  getById(id: string): Promise<any | null>;
+  getByUsername(username: string): Promise<any | null>;
+  getByEmail(email: string): Promise<any | null>;
+  update(id: string, data: Partial<any>): Promise<any | null>;
+  delete(id: string): Promise<boolean>;
+}
 export { Post, Comment };
+export { User } from './models';
 
